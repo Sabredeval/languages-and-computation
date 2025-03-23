@@ -4,14 +4,7 @@ import '../styles/Home.css';
 
 const Home = () => {
   const cards = [
-    {
-        id: 'fl',
-        title: 'Formal Languages',
-        description: 'Understand basic concepts of formal languages.',
-        icon: '🔠',
-        color: '#ACB9B1',
-        topics: ['Language', 'Word', 'Alphabet', 'Subset construction']
-    },
+    
     {
       id: 'fa',
       title: 'Finite Automata',
@@ -51,6 +44,14 @@ const Home = () => {
         icon: '🤖',
         color: '#9C27B0',
         topics: ['Tape operations', 'State transitions', 'Computability']
+    },
+    {
+      id: 'fl',
+      title: 'Dictionary',
+      description: 'Understand basic concepts of formal languages.',
+      icon: '🔠',
+      color: '#ACB9B1',
+      topics: ['Language', 'Word', 'Alphabet', 'Subset construction']
     }
     
   ];

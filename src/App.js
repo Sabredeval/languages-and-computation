@@ -9,6 +9,7 @@ import PumpingLemma from './pages/PumpingLemma';
 import CFGrammar from './pages/CFGrammar';
 import PushdownAutomata from './pages/PushdownAutomata';
 import TuringMachine from './pages/TuringMachine';
+import Dictionary from './pages/Dictionary';
 
 function App() {
   return (
@@ -23,7 +24,8 @@ function App() {
             <Route path="/pa" element={<PushdownAutomata />} />
             <Route path="/tm" element={<TuringMachine />} />
             <Route path="/pl" element={<PumpingLemma />} />
-          </Routes>
+            <Route path="/dict" element={<Dictionary />} />
+            </Routes>
         </main>
       </div>
     </Router>

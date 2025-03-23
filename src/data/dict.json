@@ -1,0 +1,94 @@
+[
+  {
+    "term": "Alphabet (Σ)",
+    "definition": "A finite set of symbols used to construct words in a language. For example, Σ = {0, 1} is a common binary alphabet."
+  },
+  {
+    "term": "Word",
+    "definition": "A finite sequence of symbols from an alphabet. For example, 0010 is a word over the alphabet Σ = {0, 1}."
+  },
+  {
+    "term": "Language",
+    "definition": "A set of words, often defined over a specific alphabet. For example, the set {0010, 00000000, ϵ} is a language over Σ = {0, 1}."
+  },
+  {
+    "term": "Empty Word (ϵ)",
+    "definition": "A word with no symbols, having a length of 0. It is distinct from the empty set (∅) and the set containing the empty word ({ϵ})."
+  },
+  {
+    "term": "Empty Set (∅)",
+    "definition": "A set containing no elements. It is distinct from the empty word (ϵ) and the set containing the empty word ({ϵ})."
+  },
+  {
+    "term": "Kleene Star (Σ*)",
+    "definition": "The set of all possible words (including the empty word) that can be formed from an alphabet Σ. For example, if Σ = {0, 1}, then Σ* includes words like ϵ, 0, 1, 00, 01, etc."
+  },
+  {
+    "term": "Concatenation",
+    "definition": "An operation on words or languages where two words or sets of words are combined. For example, if M = {ϵ, a, aa} and N = {b, c}, then MN = {b, c, ab, ac, aab, aac}."
+  },
+  {
+    "term": "Exponent Notation",
+    "definition": "Used to denote iterated concatenation of a word or language. For example, u^2 = uu, and L^3 = LLL."
+  },
+  {
+    "term": "Kleene Star on Languages",
+    "definition": "The set of all possible concatenations of 0 or more words from a language L. For example, if L = {a, ab}, then L* = {ϵ, a, ab, aa, aab, aba, ...}."
+  },
+  {
+    "term": "Deterministic Finite Automaton (DFA)",
+    "definition": "A finite automaton where each state has exactly one transition for each symbol in the alphabet."
+  },
+  {
+    "term": "Non-deterministic Finite Automaton (NFA)",
+    "definition": "A finite automaton where a state can have multiple transitions for the same symbol or transitions without consuming input (epsilon transitions)."
+  },
+  {
+    "term": "Regular Expression",
+    "definition": "A sequence of characters defining a search pattern, often used to describe regular languages."
+  },
+  {
+    "term": "Context-Free Grammar (CFG)",
+    "definition": "A formal grammar that can generate all strings in a context-free language."
+  },
+  {
+    "term": "Turing Machine",
+    "definition": "An abstract computational model that manipulates symbols on a tape according to a set of rules."
+  },
+  {
+    "term": "Decidability",
+    "definition": "The property of a problem being solvable by an algorithm in a finite amount of time."
+  },
+  {
+    "term": "Halting Problem",
+    "definition": "The problem of determining whether a given Turing machine will halt on a given input. It is undecidable."
+  },
+  {
+    "term": "Powerset (P(A))",
+    "definition": "The set of all possible subsets of a set A. For example, if A = {a, b}, then P(A) = {∅, {a}, {b}, {a, b}}."
+  },
+  {
+    "term": "Palindrome",
+    "definition": "A word that reads the same forwards and backwards. For example, 'abba' is a palindrome over the English alphabet."
+  },
+  {
+    "term": "Finite Language",
+    "definition": "A language with a finite number of words. For example, {0010, 00000000, ϵ} is a finite language over Σ = {0, 1}."
+  },
+  {
+    "term": "Infinite Language",
+    "definition": "A language with an infinite number of words. For example, Σ* for any non-empty alphabet Σ is an infinite language."
+  },
+  {
+    "term": "Associativity of Concatenation",
+    "definition": "Concatenation of languages is associative: L(MN) = (LM)N."
+  },
+  {
+    "term": "Unit of Concatenation",
+    "definition": "The set {ϵ} is the unit of concatenation: L{ϵ} = L = {ϵ}L."
+  },
+  {
+    "term": "Distributivity of Concatenation",
+    "definition": "Concatenation distributes through set union: L(M ∪ N) = LM ∪ LN and (L ∪ M)N = LN ∪ MN."
+  }  
+]
