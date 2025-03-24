@@ -11,21 +11,20 @@ const FAControlPanel = ({ automataType, setAutomataType,
     <div className="control-panel">
         <div className="panel-section">
         <h2>Automata Type</h2>
-        <div className="toggle-buttons">
-            <button 
-            className={`control-button ${automataType === 'dfa' ? 'active' : ''}`}
-            onClick={() => setAutomataType('dfa')}
-            >
-            DFA
-            </button>
-            <button 
-            className={`control-button ${automataType === 'nfa' ? 'active' : ''}`}
-            onClick={() => setAutomataType('nfa')}
-            disabled={true} // TODO: Implement NFA
-            >
-            NFA
-            </button>
-        </div>
+            <div className="toggle-buttons">
+                <button 
+                className={`control-button ${automataType === 'dfa' ? 'active' : ''}`}
+                onClick={() => setAutomataType('dfa')}
+                >
+                DFA
+                </button>
+                <button 
+                className={`control-button ${automataType === 'nfa' ? 'active' : ''}`}
+                onClick={() => setAutomataType('nfa')}
+                >
+                NFA
+                </button>
+            </div>
         </div>
 
 
@@ -104,14 +103,12 @@ const FAControlPanel = ({ automataType, setAutomataType,
                 >
                     {state.isAccept ? 'Unmark Accept' : 'Mark Accept'}
                 </button>
-                {!state.isStart && (
                     <button 
-                    className="control-button small"
-                    onClick={() => setStartState(state.id)}
+                        className="control-button small"
+                        onClick={() => setStartState(state.id)}
                     >
-                    Set as Start
+                        Set as Start
                     </button>
-                )}
                 <button 
                     className="control-button small danger"
                     onClick={() => handleRemoveState(state.id)}

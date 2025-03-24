@@ -29,7 +29,7 @@ const Navigation = () => {
           <li><NavLink to="/pa" onClick={() => setMenuOpen(false)}>Pushdown Automata</NavLink></li>
           <li><NavLink to="/tm" onClick={() => setMenuOpen(false)}>Turing Machines</NavLink></li>
           <li><NavLink to="/pl" onClick={() => setMenuOpen(false)}>Pumping Lemma</NavLink></li>
-        </ul>
+          </ul>
       </div>
     </nav>
   );

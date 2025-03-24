@@ -6,8 +6,6 @@ export default function SelfConnecting( props ) {
   if (props.source !== props.target) {
     return <BezierEdge {...props} />;
   }
-
-  console.log(props)
  
   const { sourceX, sourceY, targetX, targetY, id, markerEnd } = props;
   const radiusX = (sourceX - targetX) * 0.6;

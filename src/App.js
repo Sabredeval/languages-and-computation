@@ -4,12 +4,11 @@ import './styles/App.css';
 import Navigation from './components/common/Navigation';
 
 import Home from './pages/Home';
-import FiniteAutomata from './pages/FiniteAutomata';
+import FiniteAutomata from './pages/FA/index.js';
 import PumpingLemma from './pages/PumpingLemma';
-import CFGrammar from './pages/CFGrammar';
+import CFGrammar from './pages/CFG/CFGrammar';
 import PushdownAutomata from './pages/PushdownAutomata';
 import TuringMachine from './pages/TuringMachine';
-import Dictionary from './pages/Dictionary';
 
 function App() {
   return (
@@ -24,7 +23,6 @@ function App() {
             <Route path="/pa" element={<PushdownAutomata />} />
             <Route path="/tm" element={<TuringMachine />} />
             <Route path="/pl" element={<PumpingLemma />} />
-            <Route path="/dict" element={<Dictionary />} />
             </Routes>
         </main>
       </div>

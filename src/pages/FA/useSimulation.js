@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 
-export default function useSimulation(states, transitions) {
+export default function useSimulation(states, transitions, automataType) {
   const [inputString, setInputString] = useState('');
   const [testResult, setTestResult] = useState(null);
   const [currentSimulation, setCurrentSimulation] = useState(null);
@@ -12,75 +12,114 @@ export default function useSimulation(states, transitions) {
       return;
     }
     
-    // Find the start state
-    const startState = states.find(state => state.isStart);
-    if (!startState) {
-      alert('No start state defined');
+    const startStates = states.filter(s => s.isStart);
+
+    if (!startStates) {
+      alert('No start states defined');
       return;
     }
     
     // For DFA simulation
-    let currentState = startState.id;
-    const steps = [];
-    let accepted = false;
-    let rejected = false;
-    let rejectReason = '';
-    
-    // Process each character
-    for (let i = 0; i < inputString.length; i++) {
-      const char = inputString[i];
+    if (automataType === 'dfa') {
+      let currentState = states.find(s => s.isStart);
+      const steps = [];
+      let accepted = false;
+      let rejected = false;
+      let rejectReason = '';
       
-      // Find the transition for this state and input
-      const transition = transitions.find(
-        t => t.from === currentState && t.input === char
-      );
-      
-      if (!transition) {
-        rejected = true;
-        rejectReason = `No transition found from state ${currentState} on input '${char}'`;
-        break;
+      // Process each character
+      for (let i = 0; i < inputString.length; i++) {
+        const char = inputString[i];
+        
+        // Find the transition for this state and input
+        const current = currentState; // Create a local constant to avoid unsafe references
+        const transition = transitions.find(
+          t => t.from === current && t.input === char
+        );
+        
+        if (!transition) {
+          rejected = true;
+          rejectReason = `No transition found from state ${currentState} on input '${char}'`;
+          break;
+        }
+        
+        steps.push({
+          position: i,
+          symbol: char,
+          fromState: currentState,
+          toState: transition.to
+        });
+        
+        // Move to the next state
+        currentState = transition.to;
       }
       
-      steps.push({
-        position: i,
-        symbol: char,
-        fromState: currentState,
-        toState: transition.to
+      // Check if final state is an accept state
+      if (!rejected) {
+        accepted = states.some(s => s.id === currentState && s.isAccept);
+        if (!accepted) {
+          rejectReason = `Ended in state ${currentState}, which is not an accept state`;
+        }
+      }
+      
+      const simResult = {
+        steps,
+        currentState,
+        accepted,
+        rejected,
+        rejectReason,
+        inputString,
+        position: -1
+      };
+      
+      setCurrentSimulation(simResult);
+      
+      setTestResult({
+        accepted,
+        rejected,
+        reason: accepted ? `String accepted! Ended in accept state ${currentState}.` 
+                        : `String rejected: ${rejectReason}`
       });
       
-      // Move to the next state
-      currentState = transition.to;
-    }
-    
-    // Check if final state is an accept state
-    if (!rejected) {
-      accepted = states.some(s => s.id === currentState && s.isAccept);
-      if (!accepted) {
-        rejectReason = `Ended in state ${currentState}, which is not an accept state`;
+      return simResult;
+    } else {
+      let currentStates = startStates.map(s => s.id);
+      const steps = [];
+      let accepted = false;
+      let rejected = false;
+      let rejectReason = '';
+      
+      for (let i = 0; i < inputString.length; i++) {
+        const char = inputString[i];
+        const nextStates = [];
+        
+        // Find valid transition from each current state, then put them into currentStates
+        currentStates.forEach(stateId => {
+          const validTransitions = transitions.filter(t => t.from === stateId && t.input === char);
+          validTransitions.forEach(t => {
+            nextStates.push(t.to);
+          });
+        });
+
+        currentStates = nextStates;
+
+        if (!currentStates === 0) {
+          break;
+        }
       }
+
+      const isAccepted = currentStates.some(s => states.find(state => state.id === s).isAccept);
+      const simResult = {
+        steps,
+        currentState: currentStates,
+        accepted: isAccepted,
+        rejected: !isAccepted,
+        rejectReason,
+        inputString,
+        position: -1
+      };
     }
-    
-    const simResult = {
-      steps,
-      currentState,
-      accepted,
-      rejected,
-      rejectReason,
-      inputString,
-      position: -1
-    };
-    
-    setCurrentSimulation(simResult);
-    
-    setTestResult({
-      accepted,
-      rejected,
-      reason: accepted ? `String accepted! Ended in accept state ${currentState}.` 
-                       : `String rejected: ${rejectReason}`
-    });
-    
-    return simResult;
-  }, [inputString, states, transitions]);
+  }, [inputString, states, transitions, automataType]);
   
   const highlightSimulationPath = useCallback((stepIndex) => {
     if (!currentSimulation || !currentSimulation.steps.length) return;

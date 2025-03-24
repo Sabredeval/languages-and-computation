@@ -10,7 +10,6 @@ const StateNode = ({ data }) => {
       <Handle type="source" position="right" id="right" />
       <Handle type="target" position="top" id="top" />
       <Handle type="source" position="bottom" id="bottom" />
-      
       {isStart && <div className="start-indicator">Start</div>}
       <div className="state-content">
         <div className="state-label">{label}</div>

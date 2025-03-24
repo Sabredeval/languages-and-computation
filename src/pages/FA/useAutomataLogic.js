@@ -64,13 +64,19 @@ export default function useAutomataLogic() {
         : state
     ));
   }, [states]);
-  
+
   const setStartState = useCallback((stateId) => {
-    setStates(states.map(state => ({
+    console.log("Toggling start status: ", automataType);
+    if (automataType === 'nfa') {
+      setStates(states.map(state => ({
+      ...state,
+      isStart: state.id === stateId ? !state.isStart : state.isStart
+    })))} else {
+      setStates(states.map(state => ({
       ...state,
       isStart: state.id === stateId
-    })));
-  }, [states]);
+    })));}
+  }, [states, automataType]);
   
   const handleAddTransition = useCallback(() => {
     if (!fromState || !toState || !inputSymbol) {

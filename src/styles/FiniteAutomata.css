@@ -109,7 +109,7 @@
 /* Transitions UI */
 .transition-inputs {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 12px;
   margin-bottom: 15px;
   background-color: #f8f9fa;
@@ -131,6 +131,16 @@
   color: #1976D2;
   display: flex;
   align-items: center;
+}
+
+.select-group label::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background-color: #2196F3;
+  margin-right: 5px;
+  border-radius: 50%;
 }
 
 .transitions-list {
@@ -377,12 +387,36 @@
   color: #999;
 }
 
+.placeholder-result {
+  text-align: center;
+  color: #757575;
+  font-style: italic;
+  padding: 12px;
+  background: #f5f5f5;
+  border-radius: 6px;
+}
+
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-5px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Responsive Adjustments */
+/* FA Toggle Buttons */
+.toggle-buttons .control-button {
+  flex: 1;
+  color: black;
+  padding: 8px 10px;
+  opacity: 0.7;
+}
+
+.toggle-buttons .control-button.active {
+  opacity: 1;
+  color: white;
+  background-color: #1976D2;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+}
+
+/* Responsive Adjustments for FA */
 @media (max-width: 768px) {
   .transition-inputs {
     grid-template-columns: 1fr;
@@ -403,4 +437,14 @@
     margin-top: 5px;
     align-self: flex-end;
   }
+}
+
+/* Style for NFA with multiple start states */
+.automata-type-nfa .state-node.multiple-start .start-indicator {
+  background-color: #9C27B0; /* Different color for NFA start states */
+}
+
+/* You might want to add a different style for the NFA mode toggle */
+.toggle-buttons .control-button.nfa.active {
+  background-color: #9C27B0; /* Visual difference for NFA mode */
 }

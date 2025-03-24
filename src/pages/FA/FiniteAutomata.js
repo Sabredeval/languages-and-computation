@@ -1,11 +1,12 @@
 import React, { useEffect, useCallback, useMemo } from 'react';
 import { ReactFlow, Background, Controls, MiniMap, useNodesState, useEdgesState } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import SelfConnectingEdge from '../../pages/SelfConnecting';
+import SelfConnectingEdge from '../../components/SelfConnecting';
 import FAControlPanel from './FAControlPanel';
 import StateNode from './StateNode';
 import useAutomataLogic from './useAutomataLogic';
 import useSimulation from './useSimulation';
+import '../../styles/FiniteAutomata.css';
 
 // Define node and edge types outside the component to prevent recreation on renders
 const nodeTypes = {
@@ -25,6 +26,7 @@ const FiniteAutomata = () => {
     setTransitions,
     automataType,
     setAutomataType,
+    toggleStartState,
     alphabet,
     setAlphabet,
     newStateName,
@@ -205,6 +207,7 @@ const FiniteAutomata = () => {
         <FAControlPanel
           automataType={automataType}
           setAutomataType={setAutomataType}
+          toggleStartState={toggleStartState}
           states={states}
           transitions={transitions}
           alphabet={alphabet}
