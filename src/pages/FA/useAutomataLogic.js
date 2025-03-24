@@ -65,6 +65,51 @@ export default function useAutomataLogic() {
     ));
   }, [states]);
 
+  const toggleAutomataType = useCallback((type) => {
+    if (type === 'dfa') {
+      // Switching from NFA to DFA - enforce DFA constraints
+      
+      // 1. Check for multiple start states
+      const startStates = states.filter(s => s.isStart);
+      if (startStates.length > 1) {
+        const firstStartState = startStates[0].id;
+        
+        // Keep only the first start state
+        setStates(states.map(state => ({
+          ...state,
+          isStart: state.id === firstStartState ? true : false
+        })));
+        
+        alert(`Multiple start states detected. Keeping only state "${startStates[0].name}" as start state.`);
+      }
+      
+      // 2. Check for multiple transitions from the same state with the same input
+      const transitionGroups = {};
+      const duplicateTransitions = [];
+      
+      transitions.forEach(t => {
+        const key = `${t.from}-${t.input}`;
+        if (!transitionGroups[key]) {
+          transitionGroups[key] = [t];
+        } else {
+          transitionGroups[key].push(t);
+          duplicateTransitions.push(t.id);
+        }
+      });
+      
+      // Remove any duplicate transitions (keeping the first one for each group)
+      if (duplicateTransitions.length > 0) {
+        const removedCount = duplicateTransitions.length;
+        setTransitions(transitions.filter(t => !duplicateTransitions.includes(t.id)));
+        
+        alert(`Removed ${removedCount} transition(s) that violated DFA constraints.`);
+      }
+    }
+    
+    // Update the automata type
+    setAutomataType(type);
+  }, [states, transitions, setStates, setTransitions]);
+
   const setStartState = useCallback((stateId) => {
     console.log("Toggling start status: ", automataType);
     if (automataType === 'nfa') {
@@ -142,6 +187,7 @@ export default function useAutomataLogic() {
     handleAddState,
     handleRemoveState,
     toggleAcceptState,
+    toggleAutomataType,
     setStartState,
     handleAddTransition,
     handleRemoveTransition,

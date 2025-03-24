@@ -1,11 +1,11 @@
 import React from 'react';
 
-const FAControlPanel = ({ automataType, setAutomataType, 
-    alphabet, setAlphabet, transitions, states, newStateName, setNewStateName,
-    inputSymbol, setInputSymbol, setStartState, 
+const FAControlPanel = ({ automataType, setAutomataType, toggleAutomataType,
+    alphabet, setAlphabet, transitions, states, setStates, newStateName, setNewStateName,
+    inputSymbol, setInputSymbol, setStartState, nodePositions,
     handleAddState, handleAddTransition, handleRemoveState, handleRemoveTransition,
     toggleAcceptState, resetAutomaton, showInputOptions, setShowInputOptions,
-    fromState, setFromState, toState, setToState
+    fromState, setFromState, toState, setToState, importAutomaton, exportAutomaton
   }) => { return(
 
     <div className="control-panel">
@@ -14,19 +14,47 @@ const FAControlPanel = ({ automataType, setAutomataType,
             <div className="toggle-buttons">
                 <button 
                 className={`control-button ${automataType === 'dfa' ? 'active' : ''}`}
-                onClick={() => setAutomataType('dfa')}
+                onClick={() => toggleAutomataType('dfa')}
                 >
                 DFA
                 </button>
                 <button 
                 className={`control-button ${automataType === 'nfa' ? 'active' : ''}`}
-                onClick={() => setAutomataType('nfa')}
+                onClick={() => toggleAutomataType('nfa')}
                 >
                 NFA
                 </button>
             </div>
         </div>
 
+        <div className="button-group" style={{ marginTop: '8px' }}>
+            <button 
+                className="control-button"
+                onClick={() => exportAutomaton(states, transitions, alphabet, automataType, nodePositions)}
+            >
+                Export
+            </button>
+            
+            <label className="control-button">
+                Import
+                <input
+                type="file"
+                accept=".json"
+                style={{ display: "none" }}
+                onChange={(e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        importAutomaton(event.target.result);
+                    };
+                    reader.readAsText(file);
+                    }
+                    e.target.value = null;
+                }}
+                />
+            </label>
+        </div>
 
         <div className="panel-section">
         <h2>Alphabet (Σ)</h2>
@@ -94,7 +122,7 @@ const FAControlPanel = ({ automataType, setAutomataType,
             {states.map(state => (
             <div key={state.id} className="state-item">
                 <span className={`state-name ${state.isAccept ? 'accept-state' : ''}`}>
-                {state.name} {state.isStart && '(start)'}
+                {state.name}
                 </span>
                 <div className="state-actions">
                 <button 
@@ -103,11 +131,12 @@ const FAControlPanel = ({ automataType, setAutomataType,
                 >
                     {state.isAccept ? 'Unmark Accept' : 'Mark Accept'}
                 </button>
-                    <button 
-                        className="control-button small"
-                        onClick={() => setStartState(state.id)}
+                <button 
+                    className="control-button small"
+                    onClick={() => setStartState(state.id)}
+                    style={{display: state.isStart && automataType === 'dfa' ? 'none' : 'block'}}
                     >
-                        Set as Start
+                    {!state.isStart ? 'Set as Start' : 'Unset Start'}
                     </button>
                 <button 
                     className="control-button small danger"

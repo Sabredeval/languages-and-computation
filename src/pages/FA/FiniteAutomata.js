@@ -1,11 +1,12 @@
 import React, { useEffect, useCallback, useMemo } from 'react';
-import { ReactFlow, Background, Controls, MiniMap, useNodesState, useEdgesState } from '@xyflow/react';
+import { ReactFlow, Background, Controls, MiniMap, useNodesState, useEdgesState, applyNodeChanges, MarkerType } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import SelfConnectingEdge from '../../components/SelfConnecting';
 import FAControlPanel from './FAControlPanel';
 import StateNode from './StateNode';
 import useAutomataLogic from './useAutomataLogic';
 import useSimulation from './useSimulation';
+import { importAutomaton, exportAutomaton } from './util';
 import '../../styles/FiniteAutomata.css';
 
 // Define node and edge types outside the component to prevent recreation on renders
@@ -24,6 +25,7 @@ const FiniteAutomata = () => {
     states, 
     transitions, 
     setTransitions,
+    setStates,
     automataType,
     setAutomataType,
     toggleStartState,
@@ -42,6 +44,7 @@ const FiniteAutomata = () => {
     handleAddState,
     handleRemoveState,
     toggleAcceptState,
+    toggleAutomataType,
     setStartState,
     handleAddTransition,
     handleRemoveTransition,
@@ -51,7 +54,7 @@ const FiniteAutomata = () => {
   } = automataLogic;
 
   // Get simulation logic
-  const simulation = useSimulation(states, transitions);
+  const simulation = useSimulation(states, transitions, automataType);
   const { 
     currentSimulation,
     setCurrentSimulation,
@@ -108,18 +111,30 @@ const FiniteAutomata = () => {
 
   // Memoize the creation of nodes and edges to prevent unnecessary recalculations
   const flowNodes = useMemo(() => (
-    states.map(state => ({
-      id: state.id,
-      type: 'stateNode',
-      position: nodePositions[state.id] || { x: 0, y: 0 },
-      data: {
-        label: state.name,
-        isStart: state.isStart,
-        isAccept: state.isAccept,
-        isCurrentState: state.id === currentSimulation?.currentState
+    states.map(state => {
+      let isCurrentState = false;
+      
+      if (currentSimulation) {
+        if (currentSimulation.isNFA) {
+          isCurrentState = currentSimulation.currentStates?.includes(state.id);
+        } else {
+          isCurrentState = state.id === currentSimulation.currentState;
+        }
       }
-    }))
-  ), [states, nodePositions, currentSimulation?.currentState]);
+      
+      return {
+        id: state.id,
+        type: 'stateNode',
+        position: nodePositions[state.id] || { x: 0, y: 0 },
+        data: {
+          label: state.name,
+          isStart: state.isStart,
+          isAccept: state.isAccept,
+          isCurrentState: isCurrentState
+        }
+      };
+    })
+  ), [states, nodePositions, currentSimulation]);
   
   const flowEdges = useMemo(() => (
     transitions.map(t => {
@@ -134,6 +149,11 @@ const FiniteAutomata = () => {
         style: { 
           stroke: t.highlight ? '#f44336' : '#333',
           strokeWidth: t.highlight ? 3 : 1
+        },
+        markerEnd: {
+          type: MarkerType.ArrowClosed,
+          width: 20,
+          height: 20,
         },
         sourceHandle: t.sourceHandle,
         targetHandle: t.targetHandle
@@ -219,11 +239,26 @@ const FiniteAutomata = () => {
           inputSymbol={inputSymbol}
           setInputSymbol={setInputSymbol}
           setStartState={setStartState}
+          exportAutomaton={() => exportAutomaton(states, transitions, alphabet, automataType, nodePositions)}
+          importAutomaton={(jsonData) => {
+            const imported = importAutomaton(jsonData);
+            setStates(imported.states);
+            setTransitions(imported.transitions);
+            setAlphabet(imported.alphabet);
+            setAutomataType(imported.automataType);
+            if (imported.nodePositions && Object.keys(imported.nodePositions).length > 0) {
+              setNodePositions(imported.nodePositions);
+            }
+            setCurrentSimulation(null);
+            setTestResult(null);
+            alert('Automaton successfully imported!');
+          }}
           handleAddState={handleAddState}
           handleAddTransition={handleAddTransition}
           handleRemoveState={handleRemoveState}
           handleRemoveTransition={handleRemoveTransition}
           toggleAcceptState={toggleAcceptState}
+          toggleAutomataType={toggleAutomataType}
           resetAutomaton={resetAutomaton}
           showInputOptions={showInputOptions}
           setShowInputOptions={setShowInputOptions}
