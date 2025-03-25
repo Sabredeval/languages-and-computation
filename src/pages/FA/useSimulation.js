@@ -90,7 +90,7 @@ export default function useSimulation(states, transitions, automataType) {
         
         // Find the transition for this state and input
         const transition = transitions.find(
-          t => t.from === currentState && t.input === char
+          t => t.from === currentState && (t.input === char || t.input === 'ε') 
         );
         
         if (!transition) {
@@ -120,17 +120,17 @@ export default function useSimulation(states, transitions, automataType) {
       
       const simResult = {
         steps,
-        currentState: startStateId, // Start at beginning
+        currentState: startStateId,
         accepted,
         rejected,
         rejectReason,
         inputString,
-        position: -1, // Start at beginning
+        position: -1,
         isNFA: false
       };
       
       setCurrentSimulation(simResult);
-      setSimulationStep(-1); // Reset step counter
+      setSimulationStep(-1);
       
       setTestResult({
         accepted,
@@ -148,16 +148,14 @@ export default function useSimulation(states, transitions, automataType) {
       let rejected = false;
       let rejectReason = '';
       
-      // Process each character
       for (let i = 0; i < inputString.length; i++) {
         const char = inputString[i];
         const nextStates = [];
         const currentStepTransitions = [];
         
-        // Find all possible transitions from all current states
         for (const stateId of currentStates) {
           const validTransitions = transitions.filter(t => 
-            t.from === stateId && t.input === char
+            t.from === stateId && (t.input === char || t.input === 'ε') 
           );
           
           for (const transition of validTransitions) {
@@ -172,7 +170,6 @@ export default function useSimulation(states, transitions, automataType) {
           }
         }
         
-        // No valid transitions found - reject
         if (nextStates.length === 0) {
           rejected = true;
           rejectReason = `No valid transitions found from states [${currentStates.map(id => states.find(s => s.id === id)?.name).join(', ')}] on input '${char}'`;
