@@ -8,6 +8,7 @@ import StateNode from './StateNode';
 import useAutomataLogic from './useAutomataLogic';
 import useSimulation from './useSimulation';
 import { importAutomaton, exportAutomaton } from './util';
+import '../../styles/Pages.css';
 import '../../styles/FiniteAutomata.css';
 
 // Define node and edge types outside the component to prevent recreation on renders
