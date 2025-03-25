@@ -78,29 +78,6 @@ const FiniteAutomata = () => {
   // Node positions
   const [nodePositions, setNodePositions] = React.useState({});
 
-  useEffect(() => {
-    let newPositionsAdded = false;
-    const newNodePositions = { ...nodePositions };
-    const radius = 150;
-    const centerX = 250;
-    const centerY = 150;
-    
-    states.forEach((state, index) => {
-      if (!nodePositions[state.id]) {
-        newPositionsAdded = true;
-        const angle = (2 * Math.PI * index) / Math.max(states.length, 1);
-        const x = centerX + radius * Math.cos(angle);
-        const y = centerY + radius * Math.sin(angle);
-        newNodePositions[state.id] = { x, y };
-      }
-    });
-    
-    // Only update state if we actually added new positions
-    if (newPositionsAdded) {
-      setNodePositions(newNodePositions);
-    }
-  }, [states]); // Remove nodePositions from dependencies to prevent infinite loop
-
   // Handle node dragging to update stored positions
   const onNodeDragStop = useCallback((event, node) => {
     setNodePositions(prev => ({
@@ -199,7 +176,6 @@ const FiniteAutomata = () => {
     });
   }, [transitions]);
 
-  // Update nodes and edges only when their memoized values change
   useEffect(() => {
     setNodes(flowNodes);
     setEdges(flowEdges);

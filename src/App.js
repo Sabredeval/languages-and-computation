@@ -5,6 +5,7 @@ import Navigation from './components/common/Navigation';
 
 import Home from './pages/Home';
 import FiniteAutomata from './pages/FA/index.js';
+// import SubsetConstructionPage from './pages/FA/SubsetContructionPage.js';
 import PumpingLemma from './pages/PumpingLemma';
 import CFGrammar from './pages/CFG/CFGrammar';
 import PushdownAutomata from './pages/PushdownAutomata';
@@ -19,6 +20,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/fa" element={<FiniteAutomata />} />
+            {/* <Route path="/fa/subset-construction" element={<SubsetConstructionPage />} /> */}
             <Route path="/cfg" element={<CFGrammar />} />
             <Route path="/pa" element={<PushdownAutomata />} />
             <Route path="/tm" element={<TuringMachine />} />
