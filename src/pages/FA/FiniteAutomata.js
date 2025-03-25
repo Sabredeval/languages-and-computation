@@ -347,7 +347,6 @@ const FiniteAutomata = () => {
               fitView
             >
               <Controls />
-              <MiniMap />
               <Background variant="dots" gap={12} size={1} />
             </ReactFlow>
           </div>
