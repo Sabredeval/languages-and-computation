@@ -1,5 +1,5 @@
 import React from 'react';
-import { BaseEdge, BezierEdge, EdgeLabelRenderer, getBezierPath } from '@xyflow/react';
+import { BaseEdge, BezierEdge, EdgeLabelRenderer } from '@xyflow/react';
  
 export default function SelfConnecting(props) {
   // we are using the default bezier edge when source and target ids are different
@@ -7,15 +7,22 @@ export default function SelfConnecting(props) {
     return <BezierEdge {...props} />;
   }
 
-  const { sourceX, sourceY, targetX, targetY, id, markerEnd, label, style } = props;
+  const { sourceX, sourceY, targetX, targetY, markerEnd, label, style, data } = props;
+  
+  const xOffset = 40;
+  const yOffset = 85;
+
   const radiusX = (sourceX - targetX) * 0.6;
   const radiusY = 50;
+
   const edgePath = `M ${sourceX - 5} ${sourceY} A ${radiusX} ${radiusY} 0 1 0 ${
     targetX + 2
   } ${targetY}`;
   
-  const labelX = sourceX - radiusX * 0.86;
-  const labelY = sourceY - radiusY * 1.65;
+  const labelX = sourceX - xOffset;
+  const labelY = sourceY - yOffset;
+  
+  const isHighlighted = style?.stroke === '#FF5733' || data?.isHighlighted;
   
   return (
     <>
@@ -27,13 +34,17 @@ export default function SelfConnecting(props) {
             style={{
               position: 'absolute',
               transform: `translate(-50%, -50%) translate(${labelX}px, ${labelY}px)`,
-              background: 'white',
-              padding: '2px 4px',
+              background: isHighlighted ? '#fff3e0' : 'white',
+              padding: '4px 6px',
               borderRadius: '4px',
               fontSize: '12px',
               fontWeight: 'bold',
+              border: `1px solid ${isHighlighted ? '#FF5733' : '#ccc'}`,
+              color: isHighlighted ? '#FF5733' : 'inherit',
+              zIndex: 10,
               pointerEvents: 'all',
-              border: '1px solid #ccc',
+              userSelect: 'none',
+              whiteSpace: 'nowrap'
             }}
             className="nodrag nopan"
           >
