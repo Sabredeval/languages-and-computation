@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useMemo } from 'react';
-import { ReactFlow, Background, Controls, MiniMap, useNodesState, useEdgesState, applyNodeChanges, MarkerType } from '@xyflow/react';
+import { ReactFlow, Background, Controls, useNodesState, useEdgesState,  MarkerType } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import SelfConnectingEdge from '../../components/SelfConnecting';
 import BiDirectionalEdge from '../../components/BiDirectional';
